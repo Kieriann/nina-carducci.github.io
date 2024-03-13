@@ -119,81 +119,25 @@
         .attr("src", element.attr("src"));
       $(`#${lightboxId}`).modal("toggle");
     },
-    prevImage() {
-      let activeImage = null;
-      $("img.gallery-item").each(function() {
-        if ($(this).attr("src") === $(".lightboxImage").attr("src")) {
-          activeImage = $(this);
-        }
-      });
-      let activeTag = $(".tags-bar span.active-tag").data("images-toggle");
-      let imagesCollection = [];
-      if (activeTag === "all") {
-        $(".item-column").each(function() {
-          if ($(this).children("img").length) {
-            imagesCollection.push($(this).children("img"));
-          }
-        });
-      } else {
-        $(".item-column").each(function() {
-          if (
-            $(this)
-              .children("img")
-              .data("gallery-tag") === activeTag
-          ) {
-            imagesCollection.push($(this).children("img"));
-          }
-        });
-      }
-      let index = 0,
-        next = null;
 
-      $(imagesCollection).each(function(i) {
-        if ($(activeImage).attr("src") === $(this).attr("src")) {
-          index = i ;
-        }
-      });
-      next =
-        imagesCollection[index] ||
-        imagesCollection[imagesCollection.length - 1];
-      $(".lightboxImage").attr("src", $(next).attr("src"));
+      // La méthode prevImage calcule et affiche l'image précédente dans la lightbox
+    prevImage(lightboxId) {
+      let activeSrc = $(`#${lightboxId}`).find(".lightboxImage").attr("src");
+      let images = $("img.gallery-item").toArray();
+      let activeIndex = images.findIndex(img => $(img).attr("src") === activeSrc);
+      let prevIndex = activeIndex - 1 < 0 ? images.length - 1 : activeIndex - 1;
+      let prevImageSrc = $(images[prevIndex]).attr("src");
+      $(`#${lightboxId}`).find(".lightboxImage").attr("src", prevImageSrc);
     },
-    nextImage() {
-      let activeImage = null;
-      $("img.gallery-item").each(function() {
-        if ($(this).attr("src") === $(".lightboxImage").attr("src")) {
-          activeImage = $(this);
-        }
-      });
-      let activeTag = $(".tags-bar span.active-tag").data("images-toggle");
-      let imagesCollection = [];
-      if (activeTag === "all") {
-        $(".item-column").each(function() {
-          if ($(this).children("img").length) {
-            imagesCollection.push($(this).children("img"));
-          }
-        });
-      } else {
-        $(".item-column").each(function() {
-          if (
-            $(this)
-              .children("img")
-              .data("gallery-tag") === activeTag
-          ) {
-            imagesCollection.push($(this).children("img"));
-          }
-        });
-      }
-      let index = 0,
-        next = null;
 
-      $(imagesCollection).each(function(i) {
-        if ($(activeImage).attr("src") === $(this).attr("src")) {
-          index = i;
-        }
-      });
-      next = imagesCollection[index] || imagesCollection[0];
-      $(".lightboxImage").attr("src", $(next).attr("src"));
+    // La méthode nextImage calcule et affiche l'image suivante dans la lightbox
+    nextImage(lightboxId) {
+      let activeSrc = $(`#${lightboxId}`).find(".lightboxImage").attr("src");
+      let images = $("img.gallery-item").toArray();
+      let activeIndex = images.findIndex(img => $(img).attr("src") === activeSrc);
+      let nextIndex = (activeIndex + 1) % images.length;
+      let nextImageSrc = $(images[nextIndex]).attr("src");
+      $(`#${lightboxId}`).find(".lightboxImage").attr("src", nextImageSrc);
     },
     createLightBox(gallery, lightboxId, navigation) {
       gallery.append(`<div class="modal fade" id="${
