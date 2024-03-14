@@ -107,8 +107,9 @@ body {
 }
 
 .nav-link.active-tag {
-    background-color: #e4965f; /* Couleur de fond pour l'élément actif */
-    color: #fff !important; 
+    background-color: #896C2F; /* Couleur de fond pour l'élément actif */
+    color: #ffffff !important; 
+	font
 }
 
 
